@@ -4,6 +4,8 @@
 
 A template for building a [ProseKit](https://prosekit.dev) extension and publishing it to npm. The example extension here embeds YouTube videos.
 
+**[Live demo](https://prosekit-extension-youtube.vercel.app/)**
+
 > Published to npm as [`prosekit-extension-youtube`](https://www.npmjs.com/package/prosekit-extension-youtube). When you use this template, rename the package in `package.json` to your own.
 
 ## Project structure
