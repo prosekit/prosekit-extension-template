@@ -33,6 +33,7 @@ export async function readHtmlTextFromClipboard(
   format = true,
 ): Promise<string> {
   let html = (await readTextFromClipboard('text/html')) || ''
+  html = html.replace(`<meta charset="utf-8">`, '')
   if (format) {
     html = formatHTML(html)
   }

@@ -88,7 +88,6 @@ it('can copy a youtube node as a link', async () => {
   `)
   expect(await readHtmlTextFromClipboard()).toMatchInlineSnapshot(`
     "
-    <meta charset="utf-8">
     <p data-pm-slice="1 1 []">
       Paragraph 1
     </p>
