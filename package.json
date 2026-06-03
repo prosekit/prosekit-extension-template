@@ -24,29 +24,32 @@
       "import": "./dist/index.js"
     }
   },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*",
-        "./dist/index.d.ts"
-      ]
-    }
-  },
   "files": [
     "dist",
     "src"
   ],
   "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
+    "build": "tsdown && vite build --outDir out",
+    "dev": "vite",
     "lint": "eslint .",
     "fix": "eslint --fix . && prettier --write .",
     "test": "vitest",
     "typecheck": "tsc -b"
   },
+  "peerDependencies": {
+    "@prosekit/core": "^0.12.2"
+  },
+  "peerDependenciesMeta": {
+    "@prosekit/core": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@ocavue/eslint-config": "^4.5.9",
     "@ocavue/tsconfig": "^0.7.1",
+    "@prosekit/basic": "^0.9.4",
+    "@prosekit/core": "^0.12.2",
+    "@prosekit/extensions": "^0.17.3",
     "@types/node": "^22.19.11",
     "eslint": "^10.4.1",
     "prettier": "^3.8.3",
