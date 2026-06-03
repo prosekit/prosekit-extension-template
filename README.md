@@ -18,6 +18,8 @@ A template for building a [ProseKit](https://prosekit.dev) extension and publish
 
 ## Development
 
+Requires [Node.js](https://nodejs.org/) v22+ and [pnpm](https://pnpm.io/).
+
 ```bash
 git clone https://github.com/prosekit/prosekit-extension-youtube.git
 pnpm install
@@ -46,12 +48,11 @@ const extension = union(defineBasicExtension(), defineYoutube())
 
 Follow these steps to turn this template into your own published package.
 
-### 1. Clone the template
+### 1. Create your repository from this template
+
+Make sure you have [Node.js](https://nodejs.org/) v22+ and [pnpm](https://pnpm.io/) installed. Click the [**Use this template**](https://github.com/prosekit/prosekit-extension-template/generate) button on the [template repository](https://github.com/prosekit/prosekit-extension-template) to create your own repository with a clean history. Clone your new repository, then install the dependencies:
 
 ```bash
-git clone https://github.com/prosekit/prosekit-extension-youtube.git my-extension
-cd my-extension
-rm -rf .git && git init
 pnpm install
 ```
 
@@ -65,7 +66,7 @@ Edit `src/index.ts`, preview your changes with `pnpm dev`, and check them with `
 
 ### 4. Publish the first version manually
 
-npm trusted publishing cannot create a brand new package, so the very first version has to be published by hand. Log in and publish from your machine:
+[npm trusted publishing](https://docs.npmjs.com/trusted-publishers/) cannot create a brand new package, so the very first version has to be published by hand. Log in and publish from your machine:
 
 ```bash
 pnpm login
