@@ -1,18 +1,18 @@
 {
-  "name": "pkg-name",
+  "name": "prosekit-extension-youtube",
   "type": "module",
   "version": "0.0.0",
   "packageManager": "pnpm@11.5.0",
-  "description": "TypeScript starter kit",
+  "description": "A ProseKit extension for embedding YouTube videos",
   "author": "ocavue <ocavue@gmail.com>",
   "license": "MIT",
   "funding": "https://github.com/sponsors/ocavue",
-  "homepage": "https://github.com/ocavue/pkg-name#readme",
+  "homepage": "https://github.com/ocavue/prosekit-extension-youtube#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ocavue/pkg-name.git"
+    "url": "https://github.com/ocavue/prosekit-extension-youtube.git"
   },
-  "bugs": "https://github.com/ocavue/pkg-name/issues",
+  "bugs": "https://github.com/ocavue/prosekit-extension-youtube/issues",
   "keywords": [],
   "sideEffects": false,
   "main": "./dist/index.js",
