@@ -1,5 +1,3 @@
-import './style.css'
-
 import { defineBasicExtension } from '@prosekit/basic'
 import { createEditor, union } from '@prosekit/core'
 
@@ -64,6 +62,7 @@ function start() {
 try {
   start()
 } catch (error) {
-  editorElement.textContent = 'Failed to start the editor. See console for details.'
+  editorElement.textContent =
+    'Failed to start the editor. See console for details.'
   throw error
 }
