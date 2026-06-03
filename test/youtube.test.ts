@@ -9,6 +9,7 @@ import { defineYoutube } from '../src/index.ts'
 import {
   getTestContainerDiv,
   pasteHTML,
+  pasteText,
   readHtmlTextFromClipboard,
   readPlainTextFromClipboard,
 } from './utils.ts'
@@ -134,6 +135,77 @@ it('can paste a youtube link as a youtube node', () => {
       "type": "doc",
     }
   `)
+
+  editor.unmount()
+})
+
+it('can paste a youtube link as plain text', () => {
+  const extension = union(defineBasicExtension(), defineYoutube())
+  const editor = createTestEditor({ extension })
+
+  const div = getTestContainerDiv()
+  const selector = 'iframe[data-prosekit-youtube]'
+  expect(document.querySelector(selector)).toBeFalsy()
+
+  editor.mount(div)
+  editor.focus()
+
+  pasteText(editor.view, `https://www.youtube.com/embed/foo`)
+
+  expect(editor.state.doc.toJSON()).toMatchInlineSnapshot(`
+    {
+      "content": [
+        {
+          "attrs": {
+            "videoID": "foo",
+          },
+          "type": "youtube",
+        },
+      ],
+      "type": "doc",
+    }
+  `)
+
+  editor.unmount()
+})
+
+it('keeps the pasted text intact when a youtube link is mixed with other text', () => {
+  const extension = union(defineBasicExtension(), defineYoutube())
+  const editor = createTestEditor({ extension })
+
+  const div = getTestContainerDiv()
+  editor.mount(div)
+  editor.focus()
+
+  // The pasted text is more than just a youtube link, so it should stay as
+  // plain text instead of being replaced by a youtube node.
+  pasteText(
+    editor.view,
+    `https://www.youtube.com/embed/foo and some more text`,
+  )
+
+  expect(editor.state.doc.toJSON()).toMatchInlineSnapshot(`
+    {
+      "content": [
+        {
+          "content": [
+            {
+              "text": "https://www.youtube.com/embed/foo and some more text",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "doc",
+    }
+  `)
+
+  // The whole pasted text must be preserved.
+  expect(editor.state.doc.textContent).toBe(
+    `https://www.youtube.com/embed/foo and some more text`,
+  )
+  expect(document.querySelector('iframe[data-prosekit-youtube]')).toBeFalsy()
 
   editor.unmount()
 })
