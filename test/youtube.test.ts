@@ -4,7 +4,7 @@ import { createTestEditor } from '@prosekit/core/test'
 import { expect, it } from 'vitest'
 import { userEvent } from 'vitest/browser'
 
-import { defineYoutubeSpec } from '../src/index.ts'
+import { defineYoutube } from '../src/index.ts'
 
 import {
   getTestContainerDiv,
@@ -13,14 +13,14 @@ import {
 } from './utils.ts'
 
 it('contains youtube node in the ProseMirror schema', () => {
-  const extension = union(defineBasicExtension(), defineYoutubeSpec())
+  const extension = union(defineBasicExtension(), defineYoutube())
   const editor = createTestEditor({ extension })
   const schema = editor.schema
   expect(schema.spec.nodes.get('youtube')).toBeDefined()
 })
 
 it('can create a youtube node', () => {
-  const extension = union(defineBasicExtension(), defineYoutubeSpec())
+  const extension = union(defineBasicExtension(), defineYoutube())
   const editor = createTestEditor({ extension })
   const schema = editor.schema
   const youtubeNode = schema.nodes.youtube.create({ videoID: 'abc123' })
@@ -30,7 +30,7 @@ it('can create a youtube node', () => {
 })
 
 it('can reject invalid youtube node attributes', () => {
-  const extension = union(defineBasicExtension(), defineYoutubeSpec())
+  const extension = union(defineBasicExtension(), defineYoutube())
   const editor = createTestEditor({ extension })
   const schema = editor.schema
   const invalidVideoID = 123456 // Should be a string
@@ -41,7 +41,7 @@ it('can reject invalid youtube node attributes', () => {
 })
 
 it('can render youtube node as an iframe', () => {
-  const extension = union(defineBasicExtension(), defineYoutubeSpec())
+  const extension = union(defineBasicExtension(), defineYoutube())
   const editor = createTestEditor({ extension })
   const n = editor.nodes
   const doc = n.doc(n.paragraph('Paragraph'), n.youtube({ videoID: 'abc123' }))
@@ -58,13 +58,13 @@ it('can render youtube node as an iframe', () => {
 })
 
 it('can copy a youtube node as a link', async () => {
-  const extension = union(defineBasicExtension(), defineYoutubeSpec())
+  const extension = union(defineBasicExtension(), defineYoutube())
   const editor = createTestEditor({ extension })
   const n = editor.nodes
   const doc = n.doc(
-    n.paragraph('Paragraph 1'),
+    n.paragraph('<a>Paragraph 1'),
     n.youtube({ videoID: 'foo' }),
-    n.paragraph('Paragraph 2'),
+    n.paragraph('Paragraph 2<b>'),
   )
 
   const div = getTestContainerDiv()
@@ -76,30 +76,26 @@ it('can copy a youtube node as a link', async () => {
   editor.focus()
 
   const mod = isApple ? 'Meta' : 'Control'
-  await userEvent.keyboard(`{${mod}>}a{/${mod}}`) // Select all
-  await userEvent.keyboard(`{${mod}>}a{/${mod}}`) // Select all
   await userEvent.keyboard(`{${mod}>}c{/${mod}}`) // Copy
 
   expect(await readPlainTextFromClipboard()).toMatchInlineSnapshot(`
     "Paragraph 1
+
+    https://www.youtube.com/embed/foo
 
     Paragraph 2"
   `)
   expect(await readHtmlTextFromClipboard()).toMatchInlineSnapshot(`
     "
     <meta charset="utf-8">
-    <p data-pm-slice="0 0 []">
+    <p data-pm-slice="1 1 []">
       Paragraph 1
     </p>
-    <iframe
-      data-prosekit-youtube
-      frameborder="0"
-      height="360"
-      src="https://www.youtube.com/embed/foo"
-      type="text/html"
-      width="640"
+    <a
+      data-prosekit-youtube="foo"
+      href="https://www.youtube.com/embed/foo"
     >
-    </iframe>
+    </a>
     <p>
       Paragraph 2
     </p>
