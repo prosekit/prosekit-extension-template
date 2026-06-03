@@ -8,6 +8,8 @@ A template for building a [ProseKit](https://prosekit.dev) extension and publish
 
 > Published to npm as [`prosekit-extension-youtube`](https://www.npmjs.com/package/prosekit-extension-youtube). When you use this template, rename the package in `package.json` to your own.
 
+To **build your own extension**, follow the [Create your own extension](#create-your-own-extension) guide. Local development needs [Node.js](https://nodejs.org/) v22+ and [pnpm](https://pnpm.io/).
+
 ## Project structure
 
 - `src/`: the extension source code
@@ -18,10 +20,8 @@ A template for building a [ProseKit](https://prosekit.dev) extension and publish
 
 ## Development
 
-Requires [Node.js](https://nodejs.org/) v22+ and [pnpm](https://pnpm.io/).
-
 ```bash
-git clone https://github.com/prosekit/prosekit-extension-youtube.git
+git clone https://github.com/prosekit/prosekit-extension-template.git
 pnpm install
 
 pnpm dev        # start the demo website at http://localhost:5173
@@ -48,47 +48,32 @@ const extension = union(defineBasicExtension(), defineYoutube())
 
 Follow these steps to turn this template into your own published package.
 
-### 1. Create your repository from this template
+1. **Create your repository from this template.** Click the [**Use this template**](https://github.com/prosekit/prosekit-extension-template/generate) button on the [template repository](https://github.com/prosekit/prosekit-extension-template) to create your own repository with a clean history. Clone your new repository, then install the dependencies:
 
-Make sure you have [Node.js](https://nodejs.org/) v22+ and [pnpm](https://pnpm.io/) installed. Click the [**Use this template**](https://github.com/prosekit/prosekit-extension-template/generate) button on the [template repository](https://github.com/prosekit/prosekit-extension-template) to create your own repository with a clean history. Clone your new repository, then install the dependencies:
+   ```bash
+   pnpm install
+   ```
 
-```bash
-pnpm install
-```
+2. **Rename the package.** In `package.json`, update `name`, `description`, `author`, `repository`, `homepage`, and `bugs` to match your own package and repository.
 
-### 2. Rename the package
+3. **Write your extension.** Edit `src/index.ts`, preview your changes with `pnpm dev`, and check them with `pnpm test`.
 
-In `package.json`, update `name`, `description`, `author`, `repository`, `homepage`, and `bugs` to match your own package and repository.
+4. **Publish the first version manually.** [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/) cannot create a brand new package, so the very first version has to be published by hand. Log in and publish from your machine:
 
-### 3. Write your extension
+   ```bash
+   pnpm login
+   pnpm build
+   pnpm publish
+   ```
 
-Edit `src/index.ts`, preview your changes with `pnpm dev`, and check them with `pnpm test`.
+   An unscoped name is public by default. For a scoped name (`@scope/name`), run `pnpm publish --access public` instead.
 
-### 4. Publish the first version manually
+5. **Enable trusted publishing (OIDC).** Once the package exists on npm, set up OIDC so GitHub Actions can publish without a long-lived token. On [npmjs.com](https://www.npmjs.com/), open your package and go to **Settings > Trusted Publisher > GitHub Actions**, then fill in:
+   - **Organization or user**: your GitHub account or organization
+   - **Repository**: your repository name
+   - **Workflow filename**: `release.yml`
 
-[npm trusted publishing](https://docs.npmjs.com/trusted-publishers/) cannot create a brand new package, so the very first version has to be published by hand. Log in and publish from your machine:
-
-```bash
-pnpm login
-pnpm build
-pnpm publish
-```
-
-An unscoped name is public by default. For a scoped name (`@scope/name`), run `pnpm publish --access public` instead.
-
-### 5. Enable trusted publishing (OIDC)
-
-Once the package exists on npm, set up OIDC so GitHub Actions can publish without a long lived token. On npmjs.com, open your package and go to **Settings > Trusted Publisher > GitHub Actions**, then fill in:
-
-- **Organization or user**: your GitHub account or organization
-- **Repository**: your repository name
-- **Workflow filename**: `release.yml`
-
-The `Release` workflow already requests the `id-token: write` permission that OIDC needs, so no npm token or secret is required.
-
-### 6. Release future versions automatically
-
-After the first manual publish you never run `pnpm publish` by hand again. Push [Conventional Commits](https://www.conventionalcommits.org/) (`fix:`, `feat:`, ...) to `master` and [release-please](https://github.com/googleapis/release-please-action) opens a release PR. Merging it bumps the version, updates the changelog, and publishes to npm through OIDC.
+6. **Release future versions automatically.** After the first manual publish you never run `pnpm publish` by hand again. Push [Conventional Commits](https://www.conventionalcommits.org/) (`fix:`, `feat:`, ...) to `master` and [release-please](https://github.com/googleapis/release-please-action) opens a release PR. Merging it bumps the version, updates the changelog, and publishes to npm through OIDC.
 
 ## License
 
