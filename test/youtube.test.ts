@@ -179,10 +179,7 @@ it('keeps the pasted text intact when a youtube link is mixed with other text', 
 
   // The pasted text is more than just a youtube link, so it should stay as
   // plain text instead of being replaced by a youtube node.
-  pasteText(
-    editor.view,
-    `https://www.youtube.com/embed/foo and some more text`,
-  )
+  pasteText(editor.view, `https://www.youtube.com/embed/foo and some more text`)
 
   expect(editor.state.doc.toJSON()).toMatchInlineSnapshot(`
     {
