@@ -1,7 +1,7 @@
 {
   "name": "prosekit-extension-youtube",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "packageManager": "pnpm@11.5.1",
   "description": "A ProseKit extension for embedding YouTube videos",
   "author": "ocavue <ocavue@gmail.com>",
