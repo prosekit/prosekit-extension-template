@@ -73,7 +73,7 @@ Follow these steps to turn this template into your own published package.
    - **Repository**: your repository name
    - **Workflow filename**: `release.yml`
 
-6. **Release future versions automatically.** After the first manual publish you never run `pnpm publish` by hand again. Push [Conventional Commits](https://www.conventionalcommits.org/) (`fix:`, `feat:`, ...) to `master` and [release-please](https://github.com/googleapis/release-please-action) opens a release PR. Merging it bumps the version, updates the changelog, and publishes to npm through OIDC.
+6. **Release future versions automatically.** After the first manual publish you never run `pnpm publish` by hand again. Push [Conventional Commits](https://www.conventionalcommits.org/) (`fix:`, `feat:`, ...) to your default branch (usually `main` or `master`) and [release-please](https://github.com/googleapis/release-please-action) opens a release PR. Merging it bumps the version, updates the changelog, and publishes to npm through OIDC.
 
 ## License
 
