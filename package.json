@@ -33,6 +33,7 @@
     "dev": "vite website",
     "lint": "eslint .",
     "fix": "eslint --fix . && prettier --write .",
+    "pretest": "playwright install chromium",
     "test": "vitest",
     "typecheck": "tsc -b"
   },
