@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/prosekit/prosekit-extension-template/compare/v1.0.0...v1.0.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* parse plain-text youtube urls on paste ([#5](https://github.com/prosekit/prosekit-extension-template/issues/5)) ([b1e9bec](https://github.com/prosekit/prosekit-extension-template/commit/b1e9becb429e2328c96f4776ef68620af1a149ed))
+
 ## 1.0.0 (2026-06-03)
 
 
