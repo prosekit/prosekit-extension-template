@@ -8,6 +8,7 @@ import { defineYoutube } from '../src/index.ts'
 
 import {
   getTestContainerDiv,
+  pasteHTML,
   readHtmlTextFromClipboard,
   readPlainTextFromClipboard,
 } from './utils.ts'
@@ -100,6 +101,39 @@ it('can copy a youtube node as a link', async () => {
       Paragraph 2
     </p>
     "
+  `)
+
+  editor.unmount()
+})
+
+it('can paste a youtube link as a youtube node', () => {
+  const extension = union(defineBasicExtension(), defineYoutube())
+  const editor = createTestEditor({ extension })
+
+  const div = getTestContainerDiv()
+  const selector = 'iframe[data-prosekit-youtube]'
+  expect(document.querySelector(selector)).toBeFalsy()
+
+  editor.mount(div)
+  editor.focus()
+
+  pasteHTML(
+    editor.view,
+    `<a href="https://www.youtube.com/embed/foo">Youtube</a>`,
+  )
+
+  expect(editor.state.doc.toJSON()).toMatchInlineSnapshot(`
+    {
+      "content": [
+        {
+          "attrs": {
+            "videoID": "foo",
+          },
+          "type": "youtube",
+        },
+      ],
+      "type": "doc",
+    }
   `)
 
   editor.unmount()

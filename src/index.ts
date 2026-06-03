@@ -15,7 +15,45 @@ export function defineYoutubeSpec() {
     defining: true,
 
     parseDOM: [
-      // TODO
+      {
+        tag: 'a[data-prosekit-youtube]',
+        priority: 100,
+        getAttrs(element) {
+          const videoID = element.getAttribute('data-prosekit-youtube')
+          if (!videoID) {
+            return false
+          } else {
+            return { videoID } satisfies YoutubeAttrs
+          }
+        },
+      },
+      {
+        tag: 'iframe[data-prosekit-youtube]',
+        getAttrs(element) {
+          const videoID = element.getAttribute('data-prosekit-youtube')
+          if (!videoID) {
+            return false
+          } else {
+            return { videoID } satisfies YoutubeAttrs
+          }
+        },
+      },
+      {
+        tag: 'a',
+        priority: 100,
+        getAttrs(element) {
+          const url = element.getAttribute('href') || ''
+          const match = url.match(
+            /https?:\/\/www\.youtube\.com\/embed\/([^/?]+)/,
+          )
+          if (match && match[1]) {
+            const videoID = match[1]
+            return { videoID } satisfies YoutubeAttrs
+          } else {
+            return false
+          }
+        },
+      },
     ],
     toDOM(node) {
       const attrs = node.attrs as YoutubeAttrs

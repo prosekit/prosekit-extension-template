@@ -1,3 +1,4 @@
+import type { EditorView } from '@prosekit/pm/view'
 import { formatHTML } from 'diffable-html-snapshot'
 
 async function readBlobFromClipboard(
@@ -50,4 +51,11 @@ export function getTestContainerDiv() {
   div.id = id
   document.body.appendChild(div)
   return div
+}
+
+export function pasteHTML(view: EditorView, html: string) {
+  const clipboardData = new DataTransfer()
+  clipboardData.setData('text/html', html)
+  const event = new ClipboardEvent('paste', { clipboardData })
+  view.pasteHTML(html, event)
 }
