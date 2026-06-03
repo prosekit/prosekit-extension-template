@@ -29,8 +29,8 @@
     "src"
   ],
   "scripts": {
-    "build": "tsdown && vite build --outDir out",
-    "dev": "vite",
+    "build": "tsdown && vite build website",
+    "dev": "vite website",
     "lint": "eslint .",
     "fix": "eslint --fix . && prettier --write .",
     "test": "vitest",
