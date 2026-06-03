@@ -60,3 +60,10 @@ export function pasteHTML(view: EditorView, html: string) {
   const event = new ClipboardEvent('paste', { clipboardData })
   view.pasteHTML(html, event)
 }
+
+export function pasteText(view: EditorView, text: string) {
+  const clipboardData = new DataTransfer()
+  clipboardData.setData('text/plain', text)
+  const event = new ClipboardEvent('paste', { clipboardData })
+  view.pasteText(text, event)
+}
