@@ -1,23 +1,16 @@
 import { defineBasicExtension } from '@prosekit/basic'
-import { union } from '@prosekit/core'
+import { isApple, union } from '@prosekit/core'
 import { createTestEditor } from '@prosekit/core/test'
 import { expect, it } from 'vitest'
+import { userEvent } from 'vitest/browser'
 
 import { defineYoutubeSpec } from '../src/index.ts'
 
-function getTestContainerDiv() {
-  const id = 'test-container'
-  const existing = document.getElementById(id)
-  if (existing) {
-    existing.innerHTML = ''
-    return existing
-  }
-
-  const div = document.createElement('div')
-  div.id = id
-  document.body.appendChild(div)
-  return div
-}
+import {
+  getTestContainerDiv,
+  readHtmlTextFromClipboard,
+  readPlainTextFromClipboard,
+} from './utils.ts'
 
 it('contains youtube node in the ProseMirror schema', () => {
   const extension = union(defineBasicExtension(), defineYoutubeSpec())
@@ -61,4 +54,57 @@ it('can render youtube node as an iframe', () => {
   editor.setContent(doc)
 
   expect(document.querySelector(selector)).toBeTruthy()
+  editor.unmount()
+})
+
+it('can copy a youtube node as a link', async () => {
+  const extension = union(defineBasicExtension(), defineYoutubeSpec())
+  const editor = createTestEditor({ extension })
+  const n = editor.nodes
+  const doc = n.doc(
+    n.paragraph('Paragraph 1'),
+    n.youtube({ videoID: 'foo' }),
+    n.paragraph('Paragraph 2'),
+  )
+
+  const div = getTestContainerDiv()
+  const selector = 'iframe[data-prosekit-youtube]'
+  expect(document.querySelector(selector)).toBeFalsy()
+
+  editor.mount(div)
+  editor.setContent(doc)
+  editor.focus()
+
+  const mod = isApple ? 'Meta' : 'Control'
+  await userEvent.keyboard(`{${mod}>}a{/${mod}}`) // Select all
+  await userEvent.keyboard(`{${mod}>}a{/${mod}}`) // Select all
+  await userEvent.keyboard(`{${mod}>}c{/${mod}}`) // Copy
+
+  expect(await readPlainTextFromClipboard()).toMatchInlineSnapshot(`
+    "Paragraph 1
+
+    Paragraph 2"
+  `)
+  expect(await readHtmlTextFromClipboard()).toMatchInlineSnapshot(`
+    "
+    <meta charset="utf-8">
+    <p data-pm-slice="0 0 []">
+      Paragraph 1
+    </p>
+    <iframe
+      data-prosekit-youtube
+      frameborder="0"
+      height="360"
+      src="https://www.youtube.com/embed/foo"
+      type="text/html"
+      width="640"
+    >
+    </iframe>
+    <p>
+      Paragraph 2
+    </p>
+    "
+  `)
+
+  editor.unmount()
 })

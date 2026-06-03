@@ -5,8 +5,12 @@ export default defineConfig({
   test: {
     browser: {
       enabled: true,
-      provider: playwright(),
       // https://vitest.dev/config/browser/playwright
+      provider: playwright({
+        contextOptions: {
+          permissions: ['clipboard-read', 'clipboard-write'],
+        },
+      }),
       instances: [{ browser: 'chromium' }],
     },
   },
