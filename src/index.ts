@@ -5,7 +5,7 @@ export interface YoutubeAttrs {
 }
 
 export function defineYoutubeSpec() {
-  return defineNodeSpec({
+  return defineNodeSpec<'youtube', YoutubeAttrs>({
     name: 'youtube',
     group: 'block',
     attrs: {
@@ -25,6 +25,7 @@ export function defineYoutubeSpec() {
           height: 360,
           frameborder: 0,
           src: `https://www.youtube.com/embed/${attrs.videoID}`,
+          'data-prosekit-youtube': '',
         },
       ]
     },
